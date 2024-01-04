@@ -6,7 +6,7 @@ const Users = () => {
     {
       id: "u1",
       image:
-        "https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2021/5/25/1/shutterstock_PhotoRoman-316584812.jpg.rend.hgtvcom.616.411.suffix/1621980971547.jpeg",
+        "https://i.pinimg.com/564x/19/77/dd/1977dde8bf00f3a4b76ba81f3093acee.jpg",
       name: "Echo Zhang",
       places: 3,
     },
