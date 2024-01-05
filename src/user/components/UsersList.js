@@ -1,12 +1,13 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import UserItem from "./UserItem.js";
 import Card from "../../shared/components/UIElements/Card";
 
 import "./UsersList.css";
 
-const UsersList = (props) => {
-  if (props.items.length === 0) {
+const UsersList = ({ items }) => {
+  if (items.length === 0) {
     return (
       <div className="center">
         <Card>
@@ -17,7 +18,7 @@ const UsersList = (props) => {
   }
   return (
     <ul className="users-list">
-      {props.items.map((user) => {
+      {items.map((user) => {
         return (
           <UserItem
             key={user.id}
@@ -30,6 +31,17 @@ const UsersList = (props) => {
       })}
     </ul>
   );
+};
+
+UsersList.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      image: PropTypes.string,
+      name: PropTypes.string,
+      places: PropTypes.number,
+    })
+  ),
 };
 
 export default UsersList;

@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import Card from "../../shared/components/UIElements/Card";
-import Button from "../../shared/components/UIElements/FormElements/Button";
+import Button from "../../shared/components/FormElements/Button";
 import Modal from "../../shared/components/UIElements/Modal";
+import Map from "../../shared/components/UIElements/Map";
 
 import "./PlaceItem.css";
 
-const PlaceItem = ({ id, image, title, address, description }) => {
+const PlaceItem = ({ id, image, title, address, description, coordinates }) => {
   const [showMap, setShowMap] = useState(false);
 
   const openAndCloseMapHandler = () => {
@@ -25,7 +26,7 @@ const PlaceItem = ({ id, image, title, address, description }) => {
         footer={<Button onClick={openAndCloseMapHandler}>CLOSE</Button>}
       >
         <div className="map-container">
-          <h2>THE MAP!</h2>
+          <Map center={coordinates} zoom={16} />
         </div>
       </Modal>
       <li className="place-item">
@@ -57,6 +58,7 @@ PlaceItem.propTypes = {
   title: PropTypes.string,
   address: PropTypes.string,
   description: PropTypes.string,
+  coordinates: PropTypes.objectOf(PropTypes.number),
 };
 
 export default PlaceItem;
