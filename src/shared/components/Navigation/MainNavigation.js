@@ -11,24 +11,24 @@ import "./MainNavigation.css";
 const MainNavigation = (props) => {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
 
-  const openDrawerHandler = () => {
+  const openAndCloseDrawerHandler = () => {
     setDrawerIsOpen(!drawerIsOpen);
   };
 
   return (
     <React.Fragment>
-      {drawerIsOpen && <Backdrop onClick={openDrawerHandler} />}
-      {drawerIsOpen && (
-        <SideDrawer>
-          <nav className="main-navigation__drawer-nav">
-            <NavLinks />
-          </nav>
-        </SideDrawer>
-      )}
+      {/* this Backdrop component needs to be inserted before the SideDrawer
+       ** and in this separate JSX expression */}
+      {drawerIsOpen && <Backdrop onClick={openAndCloseDrawerHandler} />}
+      <SideDrawer show={drawerIsOpen} onClick={openAndCloseDrawerHandler}>
+        <nav className="main-navigation__drawer-nav">
+          <NavLinks />
+        </nav>
+      </SideDrawer>
       <MainHeader>
         <button
           className="main-navigation__menu-btn"
-          onClick={openDrawerHandler}
+          onClick={openAndCloseDrawerHandler}
         >
           <span />
           <span />
