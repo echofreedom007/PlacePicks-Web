@@ -12,7 +12,7 @@ const MainNavigation = (props) => {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
 
   const openAndCloseDrawerHandler = () => {
-    setDrawerIsOpen(!drawerIsOpen);
+    setDrawerIsOpen((prevDrawerIsOpen) => !prevDrawerIsOpen);
   };
 
   return (

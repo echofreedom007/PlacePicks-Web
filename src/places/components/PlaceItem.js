@@ -13,7 +13,7 @@ const PlaceItem = ({ id, image, title, address, description, coordinates }) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const openAndCloseMapHandler = () => {
-    setShowMap(!showMap);
+    setShowMap((prevShowMap) => !prevShowMap);
   };
 
   const showDeleteWarningHandler = () => {
