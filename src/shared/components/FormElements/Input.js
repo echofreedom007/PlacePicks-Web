@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { validate } from "../../util/validators";
@@ -24,21 +24,31 @@ const inputReducer = (state, action) => {
   }
 };
 
-const Input = ({
-  id,
-  label,
-  element: elementType,
-  type,
-  placeholder,
-  rows,
-  validators,
-  errorText,
-}) => {
+const Input = (props) => {
+  const {
+    id,
+    label,
+    element: elementType,
+    type,
+    placeholder,
+    rows,
+    validators,
+    errorText,
+    onInput,
+  } = props;
+
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: "",
     isTouched: false,
     isValid: false,
   });
+
+  const { value, isValid } = inputState;
+
+  useEffect(() => {
+    onInput(id, value, isValid);
+  }, [id, value, isValid, onInput]);
+
   const changeHandler = (e) => {
     dispatch({ type: "CHANGE", val: e.target.value, validators: validators });
   };
@@ -57,7 +67,7 @@ const Input = ({
         placeholder={placeholder}
         onChange={changeHandler}
         onBlur={touchHandler}
-        value={inputState.value}
+        value={value}
       />
     ) : (
       <textarea
@@ -65,7 +75,7 @@ const Input = ({
         rows={rows || 3}
         onChange={changeHandler}
         onBlur={touchHandler}
-        value={inputState.value}
+        value={value}
       />
     );
 
@@ -91,6 +101,7 @@ Input.propTypes = {
   rows: PropTypes.number,
   validators: PropTypes.array,
   errorText: PropTypes.string,
+  onInput: PropTypes.func,
 };
 
 export default Input;
