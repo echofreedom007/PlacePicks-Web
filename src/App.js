@@ -5,6 +5,8 @@ import {
   Redirect,
   Switch,
 } from "react-router-dom";
+
+import Auth from "./user/pages/Auth";
 import Users from "./user/pages/Users";
 import NewPlace from "./places/pages/NewPlace";
 import UserPlaces from "./places/pages/UserPlaces";
@@ -30,6 +32,9 @@ const App = () => {
            ** because we need to ensure the new path could be executed. The order matters here. */}
           <Route path="/places/:placeId">
             <UpdatePlace />
+          </Route>
+          <Route path="/auth">
+            <Auth />
           </Route>
           <Redirect to="/" />
         </Switch>
