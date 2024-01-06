@@ -35,12 +35,14 @@ const Input = (props) => {
     validators,
     errorText,
     onInput,
+    value: inputValue,
+    isValid: inputIsValid,
   } = props;
 
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: "",
+    value: inputValue || "",
     isTouched: false,
-    isValid: false,
+    isValid: inputIsValid || false,
   });
 
   const { value, isValid } = inputState;
@@ -102,6 +104,7 @@ Input.propTypes = {
   validators: PropTypes.array,
   errorText: PropTypes.string,
   onInput: PropTypes.func,
+  value: PropTypes.string,
 };
 
 export default Input;
