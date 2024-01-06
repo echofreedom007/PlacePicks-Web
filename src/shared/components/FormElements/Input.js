@@ -35,14 +35,14 @@ const Input = (props) => {
     validators,
     errorText,
     onInput,
-    value: inputValue,
-    isValid: inputIsValid,
+    initialValue,
+    initialIsValid,
   } = props;
 
   const [inputState, dispatch] = useReducer(inputReducer, {
-    value: inputValue || "",
+    value: initialValue || "",
     isTouched: false,
-    isValid: inputIsValid || false,
+    isValid: initialIsValid || false,
   });
 
   const { value, isValid } = inputState;
@@ -104,7 +104,8 @@ Input.propTypes = {
   validators: PropTypes.array,
   errorText: PropTypes.string,
   onInput: PropTypes.func,
-  value: PropTypes.string,
+  initialValue: PropTypes.string,
+  initialIsValid: PropTypes.bool,
 };
 
 export default Input;
