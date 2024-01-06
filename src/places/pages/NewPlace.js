@@ -50,6 +50,7 @@ const NewPlace = () => {
     },
     isValid: false,
   });
+
   // whenever in Input, the useEffect hook gets called and triggers the inputHandler function here,
   // to avoid infinite loop since new renders can re-create the inputHandler function and trigger the changes on onInput prop
   // and then the re-renders of Input, we use useCallback hook here to store result away by react and avoid re-renders.
@@ -62,8 +63,13 @@ const NewPlace = () => {
     });
   }, []);
 
+  const placeSubmitHandler = (e) => {
+    e.preventDefault();
+    console.log(formState.inputs);
+  };
+
   return (
-    <form className="place-form">
+    <form className="place-form" onSubmit={placeSubmitHandler}>
       <Input
         id="title"
         element="input"
@@ -76,10 +82,17 @@ const NewPlace = () => {
       <Input
         id="description"
         element="textarea"
-        type="text"
         label="Description"
         validators={[VALIDATOR_MINLENGTH(5)]}
         errorText="Please enter a valid description (at least 5 characters)."
+        onInput={inputHandler}
+      />
+      <Input
+        id="address"
+        element="input"
+        label="Address"
+        validators={[VALIDATOR_REQUIRE()]}
+        errorText="Please enter a valid address."
         onInput={inputHandler}
       />
       <Button type="submit" disabled={!formState.isValid}>
