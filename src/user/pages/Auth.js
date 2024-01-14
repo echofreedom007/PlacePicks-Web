@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 
 import Card from "../../shared/components/UIElements/Card";
 import Input from "../../shared/components/FormElements/Input";
@@ -37,13 +37,43 @@ const Auth = () => {
 
   const authSubmitHandler = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (isLoginMode) {
-      fetch();
+      try {
+        // Important: NO error is thrown if the request is sent and the response contains a
+        // non-success error code (i.e. 4xx or 5xx).
+        // In such a case, you still end up in the then() block and you have to handle the error there.
+        const response = await fetch("http://localhost:5000/api/users/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          }),
+        });
+
+        // parse the response body, return a promise, we can also use await
+        const responseData = await response.json();
+
+        // since fetch will not throw error even when the response contain error from backend,
+        // we should catch error here, and this block here will trigger the catch block
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+        // call setIsLoading before auth.login() because we might have uploaded the component
+        // that's not on the screen anymore the other way around. The auth.login() can direct to
+        // another page.
+        setIsLoading(false);
+        auth.login();
+      } catch (err) {
+        setIsLoading(false);
+        setError(err.message || "Something went wrong, please try again.");
+      }
     } else {
       try {
-        setIsLoading(true);
-
         // Important: NO error is thrown if the request is sent and the response contains a
         // non-success error code (i.e. 4xx or 5xx).
         // In such a case, you still end up in the then() block and you have to handle the error there.
@@ -59,19 +89,11 @@ const Auth = () => {
           }),
         });
 
-        // parse the response body, return a promise, we can also use await
         const responseData = await response.json();
 
-        // since fetch will not throw error even when the response contain error from backend,
-        // we should catch error here, and this block here will trigger the catch block
         if (!response.ok) {
           throw new Error(responseData.message);
         }
-
-        console.log(responseData);
-        // call setIsLoading before auth.login() because we might have uploaded the component
-        // that's not on the screen anymore the other way around. The auth.login() can direct to
-        // another page.
         setIsLoading(false);
         auth.login();
       } catch (err) {
@@ -104,13 +126,13 @@ const Auth = () => {
     console.log(formState.inputs);
   };
 
-  const handleError = () => {
+  const errorHandler = () => {
     setError(null);
   };
 
   return (
     <React.Fragment>
-      <ErrorModal error={error} onClear={handleError} />
+      <ErrorModal error={error} onClear={errorHandler} />
       <Card className="authentication">
         {isLoading && <LoadingSpinner asOverlay />}
         <h2>Login Required</h2>

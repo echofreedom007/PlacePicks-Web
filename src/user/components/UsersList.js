@@ -25,7 +25,7 @@ const UsersList = ({ items }) => {
             id={user.id}
             image={user.image}
             name={user.name}
-            placeCount={user.places}
+            placeCount={user.places.length}
           />
         );
       })}
@@ -39,7 +39,7 @@ UsersList.propTypes = {
       id: PropTypes.string,
       image: PropTypes.string,
       name: PropTypes.string,
-      places: PropTypes.number,
+      places: PropTypes.array,
     })
   ),
 };
