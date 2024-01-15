@@ -25,7 +25,7 @@ const PlaceList = ({ items }) => {
           <PlaceItem
             key={place.id}
             id={place.id}
-            image={place.imageUrl}
+            image={place.image}
             title={place.title}
             description={place.description}
             address={place.address}
@@ -42,7 +42,7 @@ PlaceList.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
-      imageUrl: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
       address: PropTypes.string.isRequired,
       creator: PropTypes.string.isRequired,
