@@ -39,7 +39,7 @@ const Auth = () => {
     e.preventDefault();
     if (isLoginMode) {
       try {
-        await sendRequest(
+        const responseData = await sendRequest(
           "http://localhost:5000/api/users/login",
           "POST",
           JSON.stringify({
@@ -50,14 +50,15 @@ const Auth = () => {
             "Content-Type": "application/json",
           }
         );
-        auth.login();
+
+        auth.login(responseData.user.id);
       } catch (err) {}
     } else {
       // Important: NO error is thrown if the request is sent and the response contains a
       // non-success error code (i.e. 4xx or 5xx).
       // In such a case, you still end up in the then() block and you have to handle the error there.
       try {
-        await sendRequest(
+        const responseData = await sendRequest(
           "http://localhost:5000/api/users/signup",
           "POST",
           JSON.stringify({
@@ -69,7 +70,7 @@ const Auth = () => {
             "Content-Type": "application/json",
           }
         );
-        auth.login();
+        auth.login(responseData.user.id);
       } catch (err) {}
     }
   };
