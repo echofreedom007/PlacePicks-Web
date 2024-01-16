@@ -19,6 +19,7 @@ const PlaceItem = ({
   address,
   description,
   coordinates,
+  creatorId,
   onDelete,
 }) => {
   const auth = useContext(AuthContext);
@@ -100,8 +101,10 @@ const PlaceItem = ({
             <Button inverse onClick={openAndCloseMapHandler}>
               VIEW ON MAP
             </Button>
-            {auth.isLoggedIn && <Button to={`/places/${id}`}>EDIT</Button>}
-            {auth.isLoggedIn && (
+            {auth.userId === creatorId && (
+              <Button to={`/places/${id}`}>EDIT</Button>
+            )}
+            {auth.userId === creatorId && (
               <Button danger onClick={showDeleteWarningHandler}>
                 DELETE
               </Button>
@@ -120,6 +123,7 @@ PlaceItem.propTypes = {
   address: PropTypes.string,
   description: PropTypes.string,
   coordinates: PropTypes.objectOf(PropTypes.number),
+  creatorId: PropTypes.string.isRequired,
   onDelete: PropTypes.func,
 };
 
