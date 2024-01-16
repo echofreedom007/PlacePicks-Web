@@ -38,6 +38,9 @@ const Auth = () => {
 
   const authSubmitHandler = async (e) => {
     e.preventDefault();
+
+    console.log(formState.inputs);
+
     if (isLoginMode) {
       try {
         const responseData = await sendRequest(
@@ -84,14 +87,19 @@ const Auth = () => {
       setFormData(
         {
           ...formState.inputs,
-          // drop the value of name field
+          // drop the value of name and image fields
           name: undefined,
+          image: undefined,
         },
         formState.inputs.email.isValid && formState.inputs.password.isValid
       );
     } else {
       setFormData(
-        { ...formState.inputs, name: { value: "", isValid: false } },
+        {
+          ...formState.inputs,
+          name: { value: "", isValid: false },
+          image: { value: null, isValid: false },
+        },
         false
       );
     }
@@ -117,7 +125,9 @@ const Auth = () => {
               onInput={inputHandler}
             />
           )}
-          {!isLoginMode && <ImageUpload id="image" center />}
+          {!isLoginMode && (
+            <ImageUpload id="image" center onInput={inputHandler} />
+          )}
           <Input
             id="email"
             element="input"
