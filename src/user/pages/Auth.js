@@ -62,17 +62,19 @@ const Auth = () => {
       // non-success error code (i.e. 4xx or 5xx).
       // In such a case, you still end up in the then() block and you have to handle the error there.
       try {
+        // image file data is binary which can not use in JSON format, so we need to introduce
+        // this form data. On form data, we can add both normal text data such as email, name and password,
+        // and also binary data such as files.
+        const formData = new FormData();
+        formData.append("email", formState.inputs.email.value);
+        formData.append("name", formState.inputs.name.value);
+        formData.append("password", formState.inputs.password.value);
+        formData.append("image", formState.inputs.image.value);
+
         const responseData = await sendRequest(
           "http://localhost:5000/api/users/signup",
           "POST",
-          JSON.stringify({
-            name: formState.inputs.name.value,
-            email: formState.inputs.email.value,
-            password: formState.inputs.password.value,
-          }),
-          {
-            "Content-Type": "application/json",
-          }
+          formData // with FormData, fetch api can automatically add header for us, so we can omit the heade here.
         );
         auth.login(responseData.user.id);
       } catch (err) {}
@@ -126,7 +128,12 @@ const Auth = () => {
             />
           )}
           {!isLoginMode && (
-            <ImageUpload id="image" center onInput={inputHandler} />
+            <ImageUpload
+              id="image"
+              center
+              onInput={inputHandler}
+              errorText="Please provide an image."
+            />
           )}
           <Input
             id="email"
