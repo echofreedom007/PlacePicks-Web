@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -22,11 +22,30 @@ const App = () => {
     //instead of using [isLoggedIn, setIsLoggedIn], we can use token now
     setToken(token);
     setUserId(uid);
+    // access local storage, and this is a globally available object in JavaScript
+    // this is to store the authenticaiton data
+    localStorage.setItem(
+      "userData",
+      JSON.stringify({ userId: uid, token: token })
+    );
   }, []);
   const logout = useCallback(() => {
     setToken(null);
     setUserId(null);
+
+    localStorage.removeItem("userData");
   }, []);
+
+  // ensure login can be executed when there's a valid token stored in the
+  // local storage
+  useEffect(() => {
+    // convert JSON string to regular JavaScript objects
+    const storedData = JSON.parse(localStorage.getItem("userData"));
+
+    if (storedData && storedData.token) {
+      login(storedData.userId, storedData.token);
+    }
+  }, [login]);
 
   let routes;
 
