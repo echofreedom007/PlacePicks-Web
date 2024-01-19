@@ -54,7 +54,9 @@ const NewPlace = () => {
       formData.append("creator", auth.userId);
       formData.append("image", formState.inputs.image.value);
 
-      await sendRequest("http://localhost:5000/api/places", "POST", formData);
+      await sendRequest("http://localhost:5000/api/places", "POST", formData, {
+        Authorization: "Bearer " + auth.token,
+      });
       // Redirect the user to a diff page
       history.push("/");
     } catch (err) {}
@@ -64,7 +66,7 @@ const NewPlace = () => {
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       <form className="place-form" onSubmit={placeSubmitHandler}>
-        {isLoading && <LoadingSpinner asoverlay />}
+        {isLoading && <LoadingSpinner asOverlay />}
         <Input
           id="title"
           element="input"

@@ -54,8 +54,8 @@ const Auth = () => {
             "Content-Type": "application/json",
           }
         );
-
-        auth.login(responseData.user.id);
+        console.log(responseData);
+        auth.login(responseData.userId, responseData.token);
       } catch (err) {}
     } else {
       // Important: NO error is thrown if the request is sent and the response contains a
@@ -76,7 +76,7 @@ const Auth = () => {
           "POST",
           formData // with FormData, fetch api can automatically add header for us, so we can omit the heade here.
         );
-        auth.login(responseData.user.id);
+        auth.login(responseData.userId, responseData.token);
       } catch (err) {}
     }
   };

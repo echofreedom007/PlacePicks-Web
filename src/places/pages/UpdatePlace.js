@@ -80,7 +80,9 @@ const UpdatePlace = () => {
           description: formState.inputs.description.value,
         }),
         {
+          // we can attach more than one header
           "Content-Type": "application/json",
+          Authorization: "Bearer " + auth.token,
         }
       );
 

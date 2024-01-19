@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import Card from "../../shared/components/UIElements/Card";
@@ -41,9 +41,15 @@ const PlaceItem = ({
   };
 
   const confirmDeleteHandler = async () => {
+    console.log("auth.token");
     setShowConfirmModal(false);
     try {
-      await sendRequest(`http://localhost:5000/api/places/${id}`, "DELETE");
+      await sendRequest(
+        `http://localhost:5000/api/places/${id}`,
+        "DELETE",
+        null,
+        { Authorization: "Bearer " + auth.token }
+      );
 
       // call the listener (callback function in UserPlaces )to reload the page
       onDelete(id);
@@ -122,7 +128,10 @@ PlaceItem.propTypes = {
   title: PropTypes.string,
   address: PropTypes.string,
   description: PropTypes.string,
-  coordinates: PropTypes.objectOf(PropTypes.number),
+  coordinates: PropTypes.shape({
+    lat: PropTypes.number.isRequired,
+    lng: PropTypes.number.isRequired,
+  }),
   creatorId: PropTypes.string.isRequired,
   onDelete: PropTypes.func,
 };
